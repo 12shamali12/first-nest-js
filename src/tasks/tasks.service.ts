@@ -31,7 +31,9 @@ export class TasksService {
 
     return tasks;
   }
-
+  hi() {
+    console.log('Hello from TasksService');
+  }
   createTask(create_task: CreateTaskDto): Task {
     const { title, description } = create_task;
 
