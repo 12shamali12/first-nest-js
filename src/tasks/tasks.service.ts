@@ -8,7 +8,9 @@ import { getTasksFilterDto } from './DTO/get_tasks_filter.dto';
 @Injectable()
 export class TasksService {
   private tasks: Task[] = [];
-
+  hi() {
+    console.log('Hello from TasksService');
+  }
   getAllTasks(): Task[] {
     return this.tasks;
   }
@@ -31,9 +33,7 @@ export class TasksService {
 
     return tasks;
   }
-  hi() {
-    console.log('Hello from TasksService');
-  }
+
   createTask(create_task: CreateTaskDto): Task {
     const { title, description } = create_task;
 
