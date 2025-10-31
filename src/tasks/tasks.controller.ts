@@ -12,6 +12,9 @@ import { TasksService } from './tasks.service';
 import type { Task, TaskStatus } from './tasks.model';
 import { CreateTaskDto } from './DTO/create_task.dto';
 import { getTasksFilterDto } from './DTO/get_tasks_filter.dto';
+import { pipe } from 'rxjs';
+import { get } from 'http';
+import { UpdateTaskStatusDto } from './DTO/update_tasks_status.dto';
 /* eslint-disable */
 
 @Controller('tasks')
@@ -44,8 +47,9 @@ export class TasksController {
   @Patch('/:id/status')
   updateTaskStatus(
     @Param('id') id: string,
-    @Body('status') status: TaskStatus,
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
   ) {
+    const { status } = updateTaskStatusDto; //or updateTaskStatusDto.status in the param below
     return this.tasksService.updateTaskStatus(id, status);
   }
 }
