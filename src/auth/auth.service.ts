@@ -10,7 +10,6 @@ import { User } from './user.entity';
 import { authCredentialDto } from './DTO/auth-credential.dto';
 import * as bcrypt from 'bcrypt';
 
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -20,11 +19,14 @@ export class AuthService {
 
   async createUser(authCredentialsDto: authCredentialDto): Promise<void> {
     const { username, password } = authCredentialsDto;
-    
+
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    const user = this.usersRepository.create({ username, password: hashedPassword });
+    const user = this.usersRepository.create({
+      username,
+      password: hashedPassword,
+    });
     try {
       await this.usersRepository.save(user);
     } catch (error) {
@@ -40,13 +42,12 @@ export class AuthService {
   async signIn(authCredentialsDto: authCredentialDto): Promise<string> {
     const { username, password } = authCredentialsDto;
     const user = await this.usersRepository.findOneBy({ username });
+
     if (user && (await bcrypt.compare(password, user.password))) {
+      console.log('sign in successful');
       return 'sign in successful';
     } else {
-      throw new UnauthorizedException('Invalid credentials');
-    } 
+      throw new ConflictException('Invalid credentials');
+    }
   }
-
-
-
 }
